@@ -1,8 +1,12 @@
 import HuffmanTree.Hheap;
 import HuffmanTree.HuffmanBST;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainProgram {
     public static void main(String[] args) {
@@ -39,5 +43,6 @@ public class MainProgram {
             prefixMap.put(entry.getKey(), tree.searchLeaf(entry.getKey()));
             System.out.println(entry.getKey() + ": " + tree.searchLeaf(entry.getKey()));
         }
+    Encoder.Encode(file,prefixMap,freqMap);
     }
 }
