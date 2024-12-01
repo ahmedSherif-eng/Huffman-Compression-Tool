@@ -43,6 +43,6 @@ public class MainProgram {
             prefixMap.put(entry.getKey(), tree.searchLeaf(entry.getKey()));
             System.out.println(entry.getKey() + ": " + tree.searchLeaf(entry.getKey()));
         }
-    Encoder.Encode(file,prefixMap,freqMap);
+        Encoder.Encode(file, prefixMap, freqMap);
     }
 }
