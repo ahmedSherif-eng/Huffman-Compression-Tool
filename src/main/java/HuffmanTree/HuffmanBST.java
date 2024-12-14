@@ -47,7 +47,7 @@ public class HuffmanBST {
     public Character getLeaf(String stream) {
         return searchValue(root,stream);
     }
-    private char searchValue(HuffBaseNode node, String path) {
+    private Character searchValue(HuffBaseNode node, String path) {
         if (node == null) {
             throw new IllegalArgumentException("Path does not exist in the tree.");
         }
@@ -56,7 +56,7 @@ public class HuffmanBST {
                 HuffLeafNode leaf = (HuffLeafNode) node;
                 return leaf.value(); // Return the character at the leaf
             } else {
-                throw new IllegalArgumentException("Path does not lead to a leaf node.");
+                return null;
             }
         }
         char direction = path.charAt(0);
