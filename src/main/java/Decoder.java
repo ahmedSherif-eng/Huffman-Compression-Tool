@@ -30,12 +30,15 @@ public class Decoder {
                 String value = "";
                 while (true) {
                     char c = (char) reader.read();
+                    System.out.println(c);
                     indexOfText++;
                     if (c == ',') break;
                     value += c;
                 }
-                if ((key == '-' && value.indexOf('-') == 0) || value.contains("--"))
+                if ((key == '-' && value.indexOf('-') == 0) || value.contains("--")) {
+                    System.out.println("last char: " + (char) reader.read());
                     break;
+                }
                 freqMap.put(key, Integer.parseInt(value));
             }
         } catch (IOException e) {
@@ -48,30 +51,49 @@ public class Decoder {
             System.out.println(entry.getKey() + " : " + entry.getValue());
             Hheap.insert(new HuffmanBST(entry.getKey(), entry.getValue()));
         }
-         tree = HuffmanBST.buildTree();
+        tree = HuffmanBST.buildTree();
     }
-/*    private static void  Decode(){
-        if(tree == null)
+    //todo: Continue debugging this
+    private static void Decode() {
+        if (tree == null)
             throw new RuntimeException("Something Internally Went Wrong");
-
-    }*/
-
+        try (FileInputStream reader = new FileInputStream(fileName)) {
+            int c1, c2;
+            int counter = 0;
+            while (true) {
+                c1 = reader.read();
+                c2 = reader.read();
+                counter += 2;
+                System.out.println(Integer.toHexString(c1) +"  "+Integer.toHexString(c2));
+                if (c1 == '-' && c2 == '-') {
+                    System.out.println("Breaking at "+ counter);
+                    break;
+                }
+            }
+            int x = reader.read();
+            String binaryString = Integer.toBinaryString(x);
+            System.out.println("Counter = "+counter +"\n" + binaryString + "    " + x);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
     public static void main(String[] args) throws FileNotFoundException {
         fileName = "test.txt compressed";
+
         BuildFreqMap();
         BuildTree();
-
-        System.out.println("Weight of tree: " + tree.weight() );
+        Decode();
+        System.out.println("Weight of tree: " + tree.weight());
         System.out.println("Search for 'ë': " + tree.searchLeaf('ë'));
         System.out.println("code of 0011 :" + tree.getLeaf("001"));
-        System.out.println("Index of last seperator = "+ indexOfText);
+        System.out.println("Index of last seperator = " + indexOfText);
 
         try (RandomAccessFile file = new RandomAccessFile(new File(fileName), "r")) {
             file.seek(indexOfText); // move the file pointer to the specified position
             // read a line from the specified position
-            System.out.println("Read from position " + indexOfText + ": " + (char)file.read());
+            System.out.println("Read from position " + indexOfText + ": " + (char) file.read());
         } catch (IOException e) {
             e.printStackTrace();
         }
