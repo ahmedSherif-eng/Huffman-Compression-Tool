@@ -7,11 +7,9 @@ import java.util.Map;
 
 //todo complete the decoding algorithm
 public class Decoder {
+    private static final Map<Character, Integer> freqMap = new HashMap<>();
     private static String fileName;
-    private static Map<Character, Integer> freqMap = new HashMap<>();
     private static HuffmanBST tree;
-    private static String stream;
-    private static int indexOfText = 0;
 
     private Decoder() {
     }
@@ -20,26 +18,25 @@ public class Decoder {
         Decoder.fileName = fileName;
         BuildFreqMap();
         BuildTree();
+        DecodeFile();
     }
 
     private static void BuildFreqMap() {
         try (BufferedReader reader = new BufferedReader(new FileReader(new File(fileName)))) {
             while (true) {
                 char key = (char) reader.read();
-                indexOfText++;
-                String value = "";
+                StringBuilder value = new StringBuilder();
                 while (true) {
                     char c = (char) reader.read();
                     System.out.println(c);
-                    indexOfText++;
                     if (c == ',') break;
-                    value += c;
+                    value.append(c);
                 }
-                if ((key == '-' && value.indexOf('-') == 0) || value.contains("--")) {
+                if ((key == '-' && value.toString().indexOf('-') == 0) || value.toString().contains("--")) {
                     System.out.println("last char: " + (char) reader.read());
                     break;
                 }
-                freqMap.put(key, Integer.parseInt(value));
+                freqMap.put(key, Integer.parseInt(value.toString()));
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
