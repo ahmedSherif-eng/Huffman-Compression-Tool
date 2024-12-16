@@ -92,18 +92,13 @@ public class Decoder {
 
         BuildFreqMap();
         BuildTree();
-        Decode();
+        DecodeFile();
         System.out.println("Weight of tree: " + tree.weight());
         System.out.println("Search for 'ë': " + tree.searchLeaf('ë'));
-        System.out.println("code of 0011 :" + tree.getLeaf("001"));
-        System.out.println("Index of last seperator = " + indexOfText);
+        System.out.println("code of 10111011 :" + tree.getLeaf("10111011"));
+        System.out.println("Hello".substring(0, 1));
+        System.out.println("Hello".substring(1));
 
-        try (RandomAccessFile file = new RandomAccessFile(new File(fileName), "r")) {
-            file.seek(indexOfText); // move the file pointer to the specified position
-            // read a line from the specified position
-            System.out.println("Read from position " + indexOfText + ": " + (char) file.read());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
     }
 }
