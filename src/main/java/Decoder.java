@@ -53,26 +53,37 @@ public class Decoder {
         }
         tree = HuffmanBST.buildTree();
     }
-    //todo: Continue debugging this
-    private static void Decode() {
+
+    private static void DecodeFile() {
         if (tree == null)
             throw new RuntimeException("Something Internally Went Wrong");
-        try (FileInputStream reader = new FileInputStream(fileName)) {
-            int c1, c2;
-            int counter = 0;
-            while (true) {
-                c1 = reader.read();
+        try (FileInputStream reader = new FileInputStream(fileName);
+             FileOutputStream writer = new FileOutputStream(fileName + " decmpressed")) {
+            int c1, c2 = reader.read();
+            do {
+                c1 = c2;
                 c2 = reader.read();
-                counter += 2;
-                System.out.println(Integer.toHexString(c1) +"  "+Integer.toHexString(c2));
-                if (c1 == '-' && c2 == '-') {
-                    System.out.println("Breaking at "+ counter);
-                    break;
+
+            } while (c1 != '-' || c2 != '-');
+            StringBuilder Binary = new StringBuilder();
+            int x = reader.read();  //get rid of new line
+            while ((x = reader.read()) != -1) {
+                String binaryString = String.format("%8s", Integer.toBinaryString(x)).replace(' ', '0');
+                Binary.append(binaryString);
+                int i = 1;
+                while (i <= Binary.length()) {
+                    Character ch = tree.getLeaf(Binary.substring(0, i));
+
+                    if (ch != null) {
+                        System.out.println("I found character with --> " + Binary.substring(0, i) + "\n" + "-----> " + ch);
+                        Binary = new StringBuilder(Binary.substring(i));
+                        writer.write(ch);
+                        break;
+                    }
+                    i++;
+
                 }
             }
-            int x = reader.read();
-            String binaryString = Integer.toBinaryString(x);
-            System.out.println("Counter = "+counter +"\n" + binaryString + "    " + x);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
