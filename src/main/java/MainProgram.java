@@ -16,7 +16,7 @@ public class MainProgram {
         if (args[1].equals("-e"))
             Encoder.Encode(file);
         else if (args[1].equals("-d"))
-            System.out.println(args[1]);
+            Decoder.Decode(args[1].strip());
         else{
             System.out.println("Usage: java MainProgram <filePath> <operation {-e|-d}>");
             System.exit(3);
