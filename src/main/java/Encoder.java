@@ -6,22 +6,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Encoder {
-    private static Map<Character,String> prefixMap = new HashMap();
+    private static final Map<Character, String> prefixMap = new HashMap<>();
     private static File inputFile;
     private static int currentByte = 0;
     private static int numBitsFilled = 0;
-    private static HuffmanBST tree;
 
     private Encoder() {
     }
 
-    public static boolean Encode(File file) {
+    public static void Encode(File file) {
         Encoder.inputFile = file;
         String fileName = inputFile.getName();
         int dotIndex = fileName.lastIndexOf('.');
         fileName = fileName.substring(0, dotIndex);
         Map<Character, Integer> freqMap = BuildFreqMap(file);
-        WriteMetaData(freqMap,fileName);
+        WriteMetaData(freqMap, fileName);
         BuildPrefixMap(freqMap);
 
         try (BufferedReader reader = new BufferedReader(new FileReader(inputFile));
@@ -35,11 +34,10 @@ public class Encoder {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return true;
     }
 
-    private static boolean WriteMetaData(Map<Character, Integer> freqMap, String fileName) {
-        try (FileWriter writer = new FileWriter(fileName+ " compressed", false)) {
+    private static void WriteMetaData(Map<Character, Integer> freqMap, String fileName) {
+        try (FileWriter writer = new FileWriter(fileName + " compressed", false)) {
             for (Map.Entry<Character, Integer> entry : freqMap.entrySet()) {
                 writer.write(entry.getKey() + entry.getValue().toString() + ",");
             }
@@ -47,7 +45,6 @@ public class Encoder {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        return true;
     }
 
     private static void writeBit(String s, FileOutputStream output) throws IOException {
@@ -64,7 +61,7 @@ public class Encoder {
         }
     }
 
-    private static Map<Character,Integer> BuildFreqMap(File file){
+    private static Map<Character, Integer> BuildFreqMap(File file) {
         Map<Character, Integer> freqMap = new HashMap<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             int c;
@@ -77,19 +74,14 @@ public class Encoder {
         }
         return freqMap;
     }
-    private static void BuildPrefixMap(Map<Character,Integer> freqMap){
+
+    private static void BuildPrefixMap(Map<Character, Integer> freqMap) {
         for (Map.Entry<Character, Integer> entry : freqMap.entrySet())
             Hheap.insert(new HuffmanBST(entry.getKey(), entry.getValue()));
-        tree = HuffmanBST.buildTree();
+        HuffmanBST tree = HuffmanBST.buildTree();
         for (Map.Entry<Character, Integer> entry : freqMap.entrySet()) {
             prefixMap.put(entry.getKey(), tree.searchLeaf(entry.getKey()));
             System.out.println(entry.getKey() + ": " + tree.searchLeaf(entry.getKey()));
         }
-
-
-    }
-    public static void main(String[] args) {
-        String s = "0110";
-        System.out.println(s.getBytes());
     }
 }
