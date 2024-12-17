@@ -55,7 +55,7 @@ public class Decoder {
         if (tree == null)
             throw new RuntimeException("Something Internally Went Wrong");
         try (FileInputStream reader = new FileInputStream(fileName);
-             FileOutputStream writer = new FileOutputStream(fileName + " decmpressed")) {
+             FileOutputStream writer = new FileOutputStream(fileName + ".txt")) {
             int c1, c2 = reader.read();
             do {
                 c1 = c2;
@@ -72,7 +72,6 @@ public class Decoder {
                     Character ch = tree.getLeaf(Binary.substring(0, i));
 
                     if (ch != null) {
-                        System.out.println("I found character with --> " + Binary.substring(0, i) + "\n" + "-----> " + ch);
                         Binary = new StringBuilder(Binary.substring(i));
                         writer.write(ch);
                         break;
@@ -88,7 +87,7 @@ public class Decoder {
 
 
     public static void main(String[] args) throws FileNotFoundException {
-        fileName = "test.txt compressed";
+        fileName = "test compressed";
 
         BuildFreqMap();
         BuildTree();
