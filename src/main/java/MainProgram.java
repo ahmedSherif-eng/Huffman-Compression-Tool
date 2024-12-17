@@ -17,13 +17,13 @@ public class MainProgram {
         File file = new File(args[0]);
         Map<Character, Integer> freqMap = new HashMap<>();
         if (!file.exists()) {
-            System.out.println("File does not exsit: " + args[0]);
+            System.out.println("File does not exist: " + args[0]);
             System.exit(2);
         }
         System.out.println("args[0] = "+ args[0]+" args[1] = "+args[1]);
-        if (args[1] == "-e")
+        if (args[1].equals("-e"))
             Encoder.Encode(file);
-        else if (args[1] == "-d")
+        else if (args[1].equals("-d"))
             System.out.println(args[1]);
         else{
             System.out.println("Usage: java MainProgram <filePath> <operation {-e|-d}>");
