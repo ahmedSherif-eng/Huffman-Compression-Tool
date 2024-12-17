@@ -1,12 +1,5 @@
-import HuffmanTree.Hheap;
-import HuffmanTree.HuffmanBST;
-
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+
 
 public class MainProgram {
     public static void main(String[] args) {
@@ -15,7 +8,6 @@ public class MainProgram {
             System.exit(1);
         }
         File file = new File(args[0]);
-        Map<Character, Integer> freqMap = new HashMap<>();
         if (!file.exists()) {
             System.out.println("File does not exist: " + args[0]);
             System.exit(2);
