@@ -5,7 +5,6 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-//todo complete the decoding algorithm
 public class Decoder {
     private static final Map<Character, Integer> freqMap = new HashMap<>();
     private static String fileName;
@@ -22,7 +21,7 @@ public class Decoder {
     }
 
     private static void BuildFreqMap() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(new File(fileName)))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             while (true) {
                 char key = (char) reader.read();
                 StringBuilder value = new StringBuilder();
@@ -55,7 +54,7 @@ public class Decoder {
         if (tree == null)
             throw new RuntimeException("Something Internally Went Wrong");
         try (FileInputStream reader = new FileInputStream(fileName);
-             FileOutputStream writer = new FileOutputStream(fileName + " decmpressed")) {
+             FileOutputStream writer = new FileOutputStream(fileName + ".txt")) {
             int c1, c2 = reader.read();
             do {
                 c1 = c2;
@@ -72,7 +71,6 @@ public class Decoder {
                     Character ch = tree.getLeaf(Binary.substring(0, i));
 
                     if (ch != null) {
-                        System.out.println("I found character with --> " + Binary.substring(0, i) + "\n" + "-----> " + ch);
                         Binary = new StringBuilder(Binary.substring(i));
                         writer.write(ch);
                         break;
@@ -87,18 +85,4 @@ public class Decoder {
     }
 
 
-    public static void main(String[] args) throws FileNotFoundException {
-        fileName = "test.txt compressed";
-
-        BuildFreqMap();
-        BuildTree();
-        DecodeFile();
-        System.out.println("Weight of tree: " + tree.weight());
-        System.out.println("Search for 'ë': " + tree.searchLeaf('ë'));
-        System.out.println("code of 10111011 :" + tree.getLeaf("10111011"));
-        System.out.println("Hello".substring(0, 1));
-        System.out.println("Hello".substring(1));
-
-
-    }
 }
